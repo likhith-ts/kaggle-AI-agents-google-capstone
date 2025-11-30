@@ -145,11 +145,11 @@ async def call_gemini_with_retry(
         from langchain_core.messages import HumanMessage, SystemMessage
         from langchain_core.output_parsers import JsonOutputParser
 
-        # Initialize model
+        # Initialize model - use vertex_ai_location for Gemini models (global)
         llm = ChatVertexAI(
             model=settings.vertex_ai_model,
             project=settings.google_cloud_project,
-            location=settings.google_cloud_location,
+            location=settings.vertex_ai_location,  # Use global for gemini-3-pro-preview
             temperature=0.2,
             max_output_tokens=2048,
         )

@@ -11,10 +11,28 @@ from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Find the .env file - check backend dir first, then root
+# Determine environment and find the appropriate .env file
 _backend_dir = Path(__file__).resolve().parent.parent
 _root_dir = _backend_dir.parent
-_env_file = _backend_dir / ".env" if (_backend_dir / ".env").exists() else _root_dir / ".env"
+_app_env = os.getenv("APP_ENV", "development")
+
+# Priority for env file loading:
+# 1. backend/.env.{APP_ENV} (e.g., .env.development, .env.production)
+# 2. backend/.env
+# 3. root/.env
+def _find_env_file() -> Optional[Path]:
+    """Find the appropriate .env file based on environment."""
+    candidates = [
+        _backend_dir / f".env.{_app_env}",  # .env.development or .env.production
+        _backend_dir / ".env",               # backend/.env
+        _root_dir / ".env",                  # root/.env
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    return None
+
+_env_file = _find_env_file()
 
 
 class Settings(BaseSettings):
@@ -35,6 +53,7 @@ class Settings(BaseSettings):
     # Google Cloud / Vertex AI
     google_cloud_project: Optional[str] = None
     google_cloud_location: str = "us-central1"
+    vertex_ai_location: str = "global"  # For Gemini models (gemini-3-pro-preview is global-only)
     vertex_ai_model: str = "gemini-3-pro-preview"
     vertex_embedding_model: str = "text-embedding-004"
 
@@ -50,7 +69,7 @@ class Settings(BaseSettings):
     enable_tracing: bool = True
 
     model_config = SettingsConfigDict(
-        env_file=str(_env_file),
+        env_file=str(_env_file) if _env_file else None,
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",  # Ignore extra env vars not defined in Settings
@@ -60,7 +79,12 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     """Get cached settings instance."""
-    return Settings()
+    settings = Settings()
+    if _env_file:
+        print(f"[config] Loaded settings from: {_env_file}")
+    else:
+        print("[config] No .env file found, using environment variables only")
+    return settings
 
 
 def is_llm_available() -> bool:
