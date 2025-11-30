@@ -6,12 +6,19 @@
 
 set -e
 
-# Load environment variables from .env file (root or backend)
-if [ -f "../.env" ]; then
+# Load environment variables from env files (priority: .env.production > ../.env > .env)
+if [ -f ".env.production" ]; then
+    echo "Loading from .env.production..."
+    set -a
+    source ".env.production"
+    set +a
+elif [ -f "../.env" ]; then
+    echo "Loading from root .env..."
     set -a
     source "../.env"
     set +a
 elif [ -f ".env" ]; then
+    echo "Loading from backend .env..."
     set -a
     source ".env"
     set +a
@@ -104,6 +111,7 @@ deploy_service() {
     ENV_VARS="${ENV_VARS}FRONTEND_URL=${FRONTEND_URL:-},"
     ENV_VARS="${ENV_VARS}GOOGLE_CLOUD_PROJECT=${PROJECT_ID},"
     ENV_VARS="${ENV_VARS}GOOGLE_CLOUD_LOCATION=${REGION},"
+    ENV_VARS="${ENV_VARS}VERTEX_AI_LOCATION=${VERTEX_AI_LOCATION:-global},"
     ENV_VARS="${ENV_VARS}VERTEX_AI_MODEL=${VERTEX_AI_MODEL},"
     ENV_VARS="${ENV_VARS}VERTEX_EMBEDDING_MODEL=${VERTEX_EMBEDDING_MODEL}"
 
