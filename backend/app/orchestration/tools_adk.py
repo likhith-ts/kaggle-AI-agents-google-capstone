@@ -4,11 +4,23 @@ ADK Tool Registry for MCP Integration.
 This module provides a registry pattern for registering and retrieving
 async tool functions compatible with Google ADK / MCP protocol.
 
+⭐ NOTE: This module now bridges to REAL google.adk.FunctionTool
+    - For real google.adk tool definitions, see adk_agents.py
+    - This registry remains for legacy tool support and testing
+
 Key Features:
 - @adk_tool decorator for easy tool registration
 - wrap_sync() helper for adapting sync functions to async
 - Lazy imports to keep startup cheap
 - Type-safe tool signatures
+- Integration with real google.adk.FunctionTool
+
+REAL GOOGLE ADK TOOLS:
+    See app/orchestration/adk_agents.py for the actual google.adk implementation:
+    - create_triage_tool() → FunctionTool
+    - create_explain_tool() → FunctionTool
+    - create_runbook_tool() → FunctionTool
+    - create_policy_tool() → FunctionTool
 
 Tool Signature:
     async def tool(inputs: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]
@@ -42,8 +54,9 @@ Usage:
     result = await tool({"features": {...}}, {"trace_id": "abc"})
 
 References:
-    - Google ADK: https://google.github.io/adk-docs/
-    - Kaggle AI Agents Course Day 2b
+    - Google ADK: https://google-adk.readthedocs.io/
+    - Real Implementation: app/orchestration/adk_agents.py
+    - Kaggle AI Agents Capstone Course
 """
 
 import asyncio

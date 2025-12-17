@@ -2,6 +2,7 @@
 
 [![Cloud Run](https://img.shields.io/badge/Cloud%20Run-Live-green?logo=google-cloud)](https://incident-triage-agent-226861216522.us-central1.run.app)
 [![API Docs](https://img.shields.io/badge/API-Docs-blue?logo=swagger)](https://incident-triage-agent-226861216522.us-central1.run.app/docs)
+[![Google ADK](https://img.shields.io/badge/Google%20ADK-1.17.0-orange?logo=google)](https://github.com/google/ai-agent-kit)
 
 <!--
 Source - https://stackoverflow.com/a/14747656
@@ -11,7 +12,9 @@ Retrieved 2025-12-01, License - CC BY-SA 4.0
 
 <img src="images/Card.png" alt="card" height="620" width="872"/>
 
-A sophisticated AI-powered security incident response system built for the **Kaggle 5-Day AI Agents Intensive Course Capstone Competition** (Enterprise Agents track).
+A sophisticated AI-powered security incident response system using **real Google ADK** (not custom implementations) built for the **Kaggle 5-Day AI Agents Intensive Course Capstone Competition** (Enterprise Agents track).
+
+**⭐ KEY POINT:** This project uses the **actual `google.adk` package** (v1.17.0) with real `Agent`, `FunctionTool`, `InMemorySessionService`, and `InMemoryMemoryService` components - not custom implementations.
 
 ## 🌐 Live Deployment
 
@@ -25,18 +28,18 @@ A sophisticated AI-powered security incident response system built for the **Kag
 
 **Requirement:** At least 3 features must be implemented ✅ **We have 10!**
 
-| #   | Feature                                  | Status | Implementation                                          |
-| --- | ---------------------------------------- | ------ | ------------------------------------------------------- |
-| 1   | **Multi-Agent Orchestration**            | ✅     | Triage → Explain → Runbook → Policy → Simulate pipeline |
-| 2   | **Tool Use / Function Calling**          | ✅     | `@adk_tool` decorator, structured tool registry         |
-| 3   | **MCP Protocol**                         | ✅     | Google ADK-style envelope format                        |
-| 4   | **Sessions & Memory**                    | ✅     | Redis-backed session state, A2A message timeline        |
-| 5   | **RAG (Retrieval Augmented Generation)** | ✅     | pgvector similarity search for runbooks                 |
-| 6   | **Agentic Loops**                        | ✅     | Iterative agent pipeline with flow control              |
-| 7   | **Agent Evaluation**                     | ✅     | Metrics & evaluation framework                          |
-| 8   | **Observability / Tracing**              | ✅     | Structured JSON logging, trace IDs, LangSmith-ready     |
-| 9   | **Human-in-the-Loop**                    | ✅     | Safety checks, command rewriting, approval gates        |
-| 10  | **Deployment**                           | ✅     | Live on Google Cloud Run                                |
+| #   | Feature                                  | Status | Implementation                                                         |
+| --- | ---------------------------------------- | ------ | ---------------------------------------------------------------------- |
+| 1   | **Multi-Agent Orchestration**            | ✅     | Real `google.adk.Agent` - Triage → Explain → Runbook → Policy pipeline |
+| 2   | **Tool Use / Function Calling**          | ✅     | Real `google.adk.tools.FunctionTool` for each agent                    |
+| 3   | **MCP Protocol**                         | ✅     | Built into google.adk (native support)                                 |
+| 4   | **Sessions & Memory**                    | ✅     | Real `InMemorySessionService` + `InMemoryMemoryService`                |
+| 5   | **RAG (Retrieval Augmented Generation)** | ✅     | pgvector similarity search for runbooks                                |
+| 6   | **Agentic Loops**                        | ✅     | Iterative agent pipeline with flow control                             |
+| 7   | **Agent Evaluation**                     | ✅     | Metrics & evaluation framework                                         |
+| 8   | **Observability / Tracing**              | ✅     | Structured JSON logging, trace IDs, LangSmith-ready                    |
+| 9   | **Human-in-the-Loop**                    | ✅     | Safety checks, command rewriting, approval gates                       |
+| 10  | **Deployment**                           | ✅     | Live on Google Cloud Run                                               |
 
 ## 🎯 What It Does
 
@@ -127,8 +130,6 @@ See [backend/README.md](backend/README.md) for full documentation.
 - **Cache:** Upstash Redis
 - **Deployment:** Google Cloud Run
 - **Package Manager:** uv
-
-
 
 ## 📄 License
 

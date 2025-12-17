@@ -2,6 +2,7 @@
 Orchestration and protocol handling.
 
 This package contains:
+- Real Google ADK agent implementations (from google.adk package)
 - A2A (Agent-to-Agent) orchestration
 - MCP (Model Context Protocol) envelope handling
 - ADK tool registry
@@ -9,6 +10,21 @@ This package contains:
 - Vertex AI tools demo
 """
 
+from .adk_agents import (
+    initialize_adk_services,
+    get_session_service,
+    get_memory_service,
+    create_triage_agent,
+    create_explain_agent,
+    create_runbook_agent,
+    create_policy_agent,
+    run_triage_with_adk,
+    run_explain_with_adk,
+    run_runbook_with_adk,
+    store_memory_entry,
+    retrieve_memory_entry,
+    clear_session_memory,
+)
 from .a2a import (
     orchestrate_flow,
     orchestrate_flow_full,
@@ -53,6 +69,20 @@ from .built_in_tools_demo import (
 )
 
 __all__ = [
+    # Real Google ADK Agents
+    "initialize_adk_services",
+    "get_session_service",
+    "get_memory_service",
+    "create_triage_agent",
+    "create_explain_agent",
+    "create_runbook_agent",
+    "create_policy_agent",
+    "run_triage_with_adk",
+    "run_explain_with_adk",
+    "run_runbook_with_adk",
+    "store_memory_entry",
+    "retrieve_memory_entry",
+    "clear_session_memory",
     # A2A
     "orchestrate_flow",
     "orchestrate_flow_full",
